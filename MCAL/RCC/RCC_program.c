@@ -1,9 +1,3 @@
-/*
- * RCC_program.c
- *
- *  Created on: Feb 2, 2021
- *      Author: Boon
- */
 
 
 #include "STD_TYPES.h"

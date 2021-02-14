@@ -34,10 +34,10 @@ int main(void)
 	DIO_voidSetPinDirection(DIO_U8_PORTA, DIO_U8_PIN8, DIO_OUTPUT_50MHZ_AF_PP);
 
 
-	PWM_Init(); //Initialize PWM1 channel 1
+	PWM_Init();
     /* Loop forever */
 	while(1)
 	{
-	PWM_duty(10000);// Set PWM to 1000, maximum 10000, or 10%;
+	PWM_duty(500);// Set PWM to 500, Range 1 -> 1000
 	}
 }

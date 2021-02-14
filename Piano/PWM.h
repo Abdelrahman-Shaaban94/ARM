@@ -12,6 +12,29 @@
 #include "STD_TYPES.h"
 
 
+/*  TimerFreq = ClockFreq /	(AutoReload*prescaler) */
+#define AutoReload 1000
+#define prescaler 8
+
+
+/*        TIM1_CCMR1     */
+#define     OC1      3
+#define     OC1M0    4
+#define     OC1M1    5
+#define     OC1M2    6
+
+/*        TIM1_CCER     */
+#define    CC1E      0
+
+
+/*        TIM1_BDTR     */
+#define    MOE      15
+
+
+
+/*        TIM1_CR1     */
+#define    CEN      0
+
 
 typedef struct
 {
@@ -34,10 +57,10 @@ typedef struct
 	volatile u32	CCR4;
 	volatile u32	BDTR;
 
-}TIM1;
+}TIM1_Type;
 
 
-#define 	TIM1 		((TIM1*)0x40012C00)
+#define 	TIM1 		((TIM1_Type*)0x40012C00)
 
 
 void PWM_Init(void);

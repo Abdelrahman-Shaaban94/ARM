@@ -17,32 +17,48 @@
 #include "GPIO_private.h"
 
 
-#define arr_init 7199// Frequency = 72000 000 000/((7199+1)*(0+1)), 10000 times per second
-#define psc_init 0
+
+
 
 
 void PWM_Init(void)
 {
 
-	TIM1->ARR=arr_init;			//Setting counter auto-reload value
-	TIM1->PSC=psc_init;			//Predivider settings
-
-	TIM1->CCMR1|=6<<4;  	//CH1 PWM1 mode
-	TIM1->CCMR1|=1<<3; 		//CH1 preloading enablement
-	TIM1->CCER|=1<<0;   	//OC1 Output Enablation
-	TIM1->BDTR|=1<<15;   	//MOE Main Output Enablation
-
-	TIM1->CR1=0x0080;   	//ARPE enable
-	TIM1->CR1|=0x01;    	//Enabling timer 1
+	/* Setting counter auto-reload value (top)
+	 * Prescaler settings
+	 */
+	TIM1->ARR= AutoReload;
+	TIM1->PSC= prescaler;
 
 
-	TIM1->CCR1 =0;
+	/*   PWM1 mode */
+	CLR_BIT(TIM1->CCMR1,OC1M0);
+	SET_BIT(TIM1->CCMR1,OC1M1);
+	SET_BIT(TIM1->CCMR1,OC1M2);
+
+	/*  enable & update CCR1 after overflow  */
+	SET_BIT(TIM1->CCMR1,OC1);
+
+	/*  enable CH1  */
+	SET_BIT(TIM1->CCER,CC1E);
+
+    /* Main Output Enable OC Enable */
+	SET_BIT(TIM1->BDTR,MOE);
+
+	/* APRE Bit enable buffer to hold  updated CCR1 value  */
+	SET_BIT(TIM1->CR1,7);
+
+
+	/* Enabling timer 1  */
+	SET_BIT(TIM1->CR1,CEN);
+
+
+	/* initial value for duty cycle  */
+	TIM1-> CCR1 = 0;
 }
 
 void PWM_duty(u16 PWM_DUTY)
 {
-	float PWM_VAL;
 
-	PWM_VAL=(arr_init*PWM_DUTY/10000.0);
-	TIM1->CCR1 =PWM_VAL;
+	TIM1->CCR1 = PWM_DUTY ;
 }
